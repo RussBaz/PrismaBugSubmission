@@ -24,9 +24,24 @@ async function main() {
     const interval = test.dbNow.getTime() - test.prismaNow.getTime();
     const difference = formatDifference(interval);
 
+    console.log('Testing default');
     console.log(`Prisma now(): ${test.prismaNow}`);
     console.log(`Postgres now(): ${test.dbNow}`);
     console.log(`The difference: ${difference}`);
+
+    const manual = await prisma.test.create({
+        data: {
+            prismaNow: new Date()
+        }
+    });
+
+    const intervalManual = manual.dbNow.getTime() - manual.prismaNow.getTime();
+    const differenceManual = formatDifference(intervalManual);
+
+    console.log('Testing manual');
+    console.log(`Manual: ${manual.prismaNow}`);
+    console.log(`Postgres now(): ${manual.dbNow}`);
+    console.log(`The difference: ${differenceManual}`);
 }
 
 main()
