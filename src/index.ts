@@ -5,14 +5,13 @@ const prisma = new PrismaClient({
 });
 
 function formatDifference(duration: number) {
-    const milliseconds = Math.floor(duration % 1000);
     const seconds = Math.floor((duration / 1000) % 60)
         .toFixed(0)
         .padStart(2, '0');
     const minutes = Math.floor((duration / (1000 * 60)) % 60)
         .toFixed(0)
         .padStart(2, '0');
-    const hours = Math.floor((duration / (1000 * 60 * 60)) % 24)
+    const hours = Math.floor(duration / (1000 * 60 * 60))
         .toFixed(0)
         .padStart(2, '0');
 
@@ -42,6 +41,21 @@ async function main() {
     console.log(`Manual: ${manual.prismaNow}`);
     console.log(`Postgres now(): ${manual.dbNow}`);
     console.log(`The difference: ${differenceManual}`);
+
+    const manual2 = await prisma.test.create({
+        data: {
+            prismaNow: new Date(),
+            dbNow: new Date()
+        }
+    });
+
+    const intervalManual2 = manual2.dbNow.getTime() - manual2.prismaNow.getTime();
+    const differenceManual2 = formatDifference(intervalManual2);
+
+    console.log('Manually assigning both properties');
+    console.log(`Manual: ${manual2.prismaNow}`);
+    console.log(`Postgres now(): ${manual2.dbNow}`);
+    console.log(`The difference: ${differenceManual2}`);
 }
 
 main()
