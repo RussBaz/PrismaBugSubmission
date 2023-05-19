@@ -5,13 +5,58 @@ Run `npm run all` and check the result. The Prisma Client misunderstands the dat
 Mac Mini 2018 (Intel)
 
 -   OS: MacOS 13.3.1 (a)
--   PostgreSQL: PostgreSQL 14.8 on aarch64-apple-darwin20.6.0, compiled by Apple clang version 12.0.5 (clang-1205.0.22.9), 64-bit
+-   PostgreSQL (local): PostgreSQL 14.8 on aarch64-apple-darwin20.6.0, compiled by Apple clang version 12.0.5 (clang-1205.0.22.9), 64-bit
 -   Node: v20.1.0
 -   NPM: 9.6.6
 
 Windows PC
 
 -   OS: Windows 10 22H2
--   PostgreSQL: PostgreSQL 12.4, compiled by Visual C++ build 1914, 64-bit
+-   PostgreSQL (local): PostgreSQL 12.4, compiled by Visual C++ build 1914, 64-bit
 -   Node: v20.2.0
 -   NPM: 9.6.6
+
+Mac Mini 2018 (Intel) Results:
+
+```
+1. Testing default
+Prisma now(): Fri May 19 2023 23:10:39 GMT+0600 (East Kazakhstan Time)
+Postgres now(): Sat May 20 2023 05:10:39 GMT+0600 (East Kazakhstan Time)
+The difference: 06:00:00 hours / 21600002 ms
+
+2. Testing manual
+Manual: Fri May 19 2023 23:10:39 GMT+0600 (East Kazakhstan Time)
+Postgres now(): Sat May 20 2023 05:10:39 GMT+0600 (East Kazakhstan Time)
+The difference: 06:00:00 hours / 21600002 ms
+
+3. Manually assigning both properties
+Manual: Fri May 19 2023 23:10:39 GMT+0600 (East Kazakhstan Time)
+Postgres now(): Fri May 19 2023 23:10:39 GMT+0600 (East Kazakhstan Time)
+The difference: 00:00:00 hours / 0 ms
+```
+
+Data in the database:
+
+```csv
+id,prismaNow,dbNow
+1,2023-05-19 17:10:39.942,2023-05-19 23:10:39.944
+2,2023-05-19 17:10:39.951,2023-05-19 23:10:39.953
+3,2023-05-19 17:10:39.953,2023-05-19 17:10:39.953
+
+```
+
+Testing now() in the database:
+
+```sql
+select now()
+```
+
+```
+2023-05-19 17:05:51.532245 +00:00
+```
+
+Running `date` from the Terminal:
+
+```
+Fri 19 May 2023 23:07:45 +06
+```

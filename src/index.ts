@@ -1,8 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 
-const prisma = new PrismaClient({
-    log: ['query', 'info', 'warn', 'error']
-});
+const prisma = new PrismaClient({});
 
 function formatDifference(duration: number) {
     const seconds = Math.floor((duration / 1000) % 60)
@@ -23,10 +21,10 @@ async function main() {
     const interval = test.dbNow.getTime() - test.prismaNow.getTime();
     const difference = formatDifference(interval);
 
-    console.log('Testing default');
+    console.log('1. Testing default');
     console.log(`Prisma now(): ${test.prismaNow}`);
     console.log(`Postgres now(): ${test.dbNow}`);
-    console.log(`The difference: ${difference}`);
+    console.log(`The difference: ${difference}\n`);
 
     const manual = await prisma.test.create({
         data: {
@@ -37,10 +35,10 @@ async function main() {
     const intervalManual = manual.dbNow.getTime() - manual.prismaNow.getTime();
     const differenceManual = formatDifference(intervalManual);
 
-    console.log('Testing manual');
+    console.log('2. Testing manual');
     console.log(`Manual: ${manual.prismaNow}`);
     console.log(`Postgres now(): ${manual.dbNow}`);
-    console.log(`The difference: ${differenceManual}`);
+    console.log(`The difference: ${differenceManual}\n`);
 
     const manual2 = await prisma.test.create({
         data: {
@@ -52,7 +50,7 @@ async function main() {
     const intervalManual2 = manual2.dbNow.getTime() - manual2.prismaNow.getTime();
     const differenceManual2 = formatDifference(intervalManual2);
 
-    console.log('Manually assigning both properties');
+    console.log('3. Manually assigning both properties');
     console.log(`Manual: ${manual2.prismaNow}`);
     console.log(`Postgres now(): ${manual2.dbNow}`);
     console.log(`The difference: ${differenceManual2}`);
