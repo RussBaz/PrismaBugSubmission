@@ -9,6 +9,13 @@ Mac Mini 2018 (Intel)
 -   Node: v20.1.0
 -   NPM: 9.6.6
 
+MacBook Pro M1 Max (ARM)
+
+-   OS: MacOS 13.3.1 (a)
+-   PostgreSQL (local): PostgreSQL 14.7 on aarch64-apple-darwin20.6.0, compiled by Apple clang version 12.0.5 (clang-1205.0.22.9), 64-bit
+-   Node: v20.1.0
+-   NPM: 9.6.7
+
 Windows PC
 
 -   OS: Windows 10 22H2
@@ -59,6 +66,51 @@ Running `date` from the Terminal:
 
 ```
 Fri 19 May 2023 23:07:45 +06
+```
+
+MacBook Pro M1 Max (ARM) Results:
+
+```
+1. Testing default
+Prisma now(): Fri May 19 2023 23:34:40 GMT+0600 (East Kazakhstan Time)
+Postgres now(): Sat May 20 2023 00:34:40 GMT+0600 (East Kazakhstan Time)
+The difference: 01:00:00 hours / 3600000 ms
+
+2. Testing manual
+Manual: Fri May 19 2023 23:34:40 GMT+0600 (East Kazakhstan Time)
+Postgres now(): Sat May 20 2023 00:34:40 GMT+0600 (East Kazakhstan Time)
+The difference: 01:00:00 hours / 3600001 ms
+
+3. Manually assigning both properties
+Manual: Fri May 19 2023 23:34:40 GMT+0600 (East Kazakhstan Time)
+Postgres now(): Fri May 19 2023 23:34:40 GMT+0600 (East Kazakhstan Time)
+The difference: 00:00:00 hours / 0 ms
+```
+
+Data in the database:
+
+```csv
+id,prismaNow,dbNow
+1,2023-05-19 17:34:40.954,2023-05-19 18:34:40.954
+2,2023-05-19 17:34:40.958,2023-05-19 18:34:40.959
+3,2023-05-19 17:34:40.959,2023-05-19 17:34:40.959
+
+```
+
+Testing now() in the database:
+
+```sql
+select now()
+```
+
+```
+2023-05-19 17:35:42.365372 +00:00
+```
+
+Running `date` from the Terminal:
+
+```
+Fri 19 May 2023 23:36:00 +06
 ```
 
 Windows PC Results:
