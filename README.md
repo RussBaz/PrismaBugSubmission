@@ -60,3 +60,60 @@ Running `date` from the Terminal:
 ```
 Fri 19 May 2023 23:07:45 +06
 ```
+
+Windows PC Results:
+
+```
+1. Testing default
+Prisma now(): Fri May 19 2023 23:21:14 GMT+0600 (East Kazakhstan Time)
+Postgres now(): Sat May 20 2023 05:21:14 GMT+0600 (East Kazakhstan Time)
+The difference: 06:00:00 hours / 21600005 ms
+
+2. Testing manual
+Manual: Fri May 19 2023 23:21:14 GMT+0600 (East Kazakhstan Time)
+Postgres now(): Sat May 20 2023 05:21:14 GMT+0600 (East Kazakhstan Time)
+The difference: 06:00:00 hours / 21600002 ms
+
+3. Manually assigning both properties
+Manual: Fri May 19 2023 23:21:14 GMT+0600 (East Kazakhstan Time)
+Postgres now(): Fri May 19 2023 23:21:14 GMT+0600 (East Kazakhstan Time)
+The difference: 00:00:00 hours / 0 ms
+```
+
+Data in the database:
+
+```csv
+id,prismaNow,dbNow
+1,2023-05-19 17:21:14.546,2023-05-19 23:21:14.551
+2,2023-05-19 17:21:14.569,2023-05-19 23:21:14.571
+3,2023-05-19 17:21:14.572,2023-05-19 17:21:14.572
+
+```
+
+Testing now() in the database:
+
+```sql
+select now()
+```
+
+```
+2023-05-19 17:24:29.266302 +00:00
+```
+
+Running `date` from the MS Terminal (PowerShell Core):
+
+```
+19 May 2023 23:27:04
+```
+
+And running `Get-TimeZone`:
+
+```
+Id                         : Central Asia Standard Time
+HasIanaId                  : False
+DisplayName                : (UTC+06:00) Nur-Sultan
+StandardName               : Central Asia Standard Time
+DaylightName               : Central Asia Summer Time
+BaseUtcOffset              : 06:00:00
+SupportsDaylightSavingTime : False
+```
