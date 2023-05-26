@@ -1,25 +1,36 @@
-import { PrismaClient } from '@prisma/client';
+import { Prisma, PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient({});
 
-function formatDifference(duration: number) {
-    const seconds = Math.floor((duration / 1000) % 60)
+function formatDifference(durationInMs: number) {
+    const seconds = Math.floor((durationInMs / 1000) % 60)
         .toFixed(0)
         .padStart(2, '0');
-    const minutes = Math.floor((duration / (1000 * 60)) % 60)
+    const minutes = Math.floor((durationInMs / (1000 * 60)) % 60)
         .toFixed(0)
         .padStart(2, '0');
-    const hours = Math.floor(duration / (1000 * 60 * 60))
+    const hours = Math.floor(durationInMs / (1000 * 60 * 60))
         .toFixed(0)
         .padStart(2, '0');
 
-    return `${hours}:${minutes}:${seconds} hours / ${duration} ms`;
+    return `${hours}:${minutes}:${seconds} hours / ${durationInMs} ms`;
 }
 
 async function main() {
     const test = await prisma.test.create({ data: {} });
     const interval = test.dbNow.getTime() - test.prismaNow.getTime();
     const difference = formatDifference(interval);
+
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const offset = formatDifference(new Date().getTimezoneOffset() * 60 * 1000);
+
+    const dbTzResult: any[] = await prisma.$queryRaw(Prisma.sql`show timezone`);
+    const dbTzValue: any = dbTzResult.length > 0 ? dbTzResult[0] : undefined;
+    const dbTz = dbTzValue?.TimeZone || 'Unknown';
+
+    console.log('Current node.js offset:', offset);
+    console.log('Current node/js timezone:', tz);
+    console.log('DB timezone:', dbTz, '\n');
 
     console.log('1. Testing default');
     console.log(`Prisma now(): ${test.prismaNow}`);
